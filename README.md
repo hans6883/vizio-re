@@ -42,8 +42,10 @@ To keep this a research publication rather than a weapon, this repo excludes:
   ship them.
 - **Any device identity or key material.** No DRM keyboxes/keys, device
   certificates, provisioning blobs, serial numbers, MAC addresses, or tokens.
-- **Turn-key exploit tooling.** Techniques are described at the level needed to
-  understand and defend against them, not as drop-in payloads.
+- **Turn-key exploit tooling.** Individual commands used during the research are
+  shown (with environment-specific values replaced by placeholders), but no
+  drop-in exploit scripts, persistence payloads, or automated attack tools are
+  included.
 - **Personal infrastructure.** No IP addresses, hostnames, or network details
   from the research environment.
 

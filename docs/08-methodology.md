@@ -7,14 +7,27 @@ on hardware they own.
 
 - Initial code execution came from the local SSID command-injection path
   (see [04-ssid-command-injection.md](04-ssid-command-injection.md)), which
-  yields a root shell.
+  yields root execution.
+- The injection is **blind** — there is no screen output or interactive
+  terminal. Execution was confirmed using a **DNS oracle**: the injected
+  command pings a unique label under a domain whose authoritative nameserver is
+  monitored. A DNS query appearing in the server log proves the command ran.
+  This technique was used to confirm uid 0, identify the shell (BusyBox hush),
+  and enumerate available applets one by one.
+- The 32-character SSID field limit means payloads must be short. The
+  practical bootstrap is **USB staging**: the TV auto-mounts FAT32 USB drives
+  at `/tmp/mnt/usb/sda1`, so a payload like `` `sh /tmp/mnt/usb/sda1/s.sh` ``
+  (28 chars) executes a script with no length limit from the USB stick. This
+  was the primary method for running enumeration scripts, dumping filesystem
+  trees, and copying binaries to USB for offline analysis.
+- The device's BusyBox is minimal (no `wget`/`nc`/`tftp`/`httpd`/`curl`), so
+  network-based file transfer from within an SSID payload is not practical.
+  All file exfiltration was done by writing output to the USB mount from a
+  staged script, then removing the stick to read on a workstation.
 - With root, the writable `/3rd_rw` partition and the read-only `/3rd` and
   `/basic` trees were enumerated: process list, open file descriptors, listening
   sockets, mounts, `inetd`/service configuration, boot scripts, and the widget
   engine's configuration and framework.
-- The device's BusyBox is minimal (no `wget`/`nc`/`tftp`/`httpd`), so file
-  transfer off the device was done over the shell channel and via the
-  auto-mounting USB path.
 
 ## Static binary analysis
 
