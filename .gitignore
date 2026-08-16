@@ -1,0 +1,15 @@
+# Never commit device artifacts or secrets into this research repo
+*.so
+*.ko
+*.bin
+*.raw
+*.pcap
+loot/
+creds/
+**/WVkeybox
+*keybox*
+*drm_keys*
+*passwords*
+*.age
+__pycache__/
+*.pyc
